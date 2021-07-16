@@ -192,8 +192,8 @@
 
 .title6 h6 {
         font-family: 'Dancing Script', cursive;
-        font-size: 60px;
-        margin-top: 90px;
+        font-size: 70px;
+        margin-top: 30px;
         }
  
 .title7 h7 {
@@ -212,8 +212,21 @@
         font-family: 'Dancing Script', cursive;
         font-size: 40px;
         margin-top: 90px;
-        }  
-            
+        }
+       
+.greece_map{
+        background-image: url('../images/greece_map.png');
+        width: 450px;
+        height: 450px;
+        background-size: cover;
+        margin-top: 60px;  
+        }        
+ 
+.weatherwidget-io{
+        width: 365px;
+        margin-top: 60px;
+}       
+        
   /*/ Gallery page /*/ 
 
  .gallery {
