@@ -3,7 +3,7 @@ var map;
 
 function initMap() {
 
-  
+  // Point Style//
 
   const fillStyle = new ol.style.Fill({
     color: [84, 118, 255, 1]
@@ -19,7 +19,6 @@ function initMap() {
     lineDash: [4, 6]
   })
 
- 
     // Points Style //
     // This is a regular coloured style for points if required in the future
     // const regularShape = new ol.style.RegularShape({
@@ -165,30 +164,31 @@ function initMap() {
 
    // CartoDB Base Map //
 
-cartoDBBaseLayer = new ol.layer.Tile({
-  source: new ol.source.XYZ({
+  cartoDBBaseLayer = new ol.layer.Tile({
+    source: new ol.source.XYZ({
     url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{scale}.png'
-  }),
-  title: 'CartoDB',
-  type: 'base'
-  });
+    }),
+    title: 'CartoDB',
+    type: 'base',
+    visible: true,
+    });
    
   // Bing Map Layer //
         
-  Bing_aerial= new ol.layer.Tile({
-      source: new ol.source.BingMaps({
-        key: 'AooSh7y-RVPWnOcID-MVAAzubSIoGkAIPIkvupFAZE6ORlPoggYNgNIfD2kufGIh',
-        imagerySet: 'AerialWithLabels'
-          }),
-        title: 'Bing Aerial',
-        type: 'base'
-          });         
+  //Bing_aerial= new ol.layer.Tile({
+    //  source: new ol.source.BingMaps({
+      //  key: 'AooSh7y-RVPWnOcID-MVAAzubSIoGkAIPIkvupFAZE6ORlPoggYNgNIfD2kufGIh',
+       // imagerySet: 'AerialWithLabels'
+        //  }),
+        // title: 'Bing Aerial',
+        //type: 'base'
+         // });         
   
   // My view //        
           
   myview = new ol.View({
     center: ol.proj.fromLonLat([25.144, 35.338], "EPSG:3857", "EPSG:2100",),
-    zoom: 8.5,
+    zoom: 6,
     projection: ('EPSG:2100', 'EPSG:3857'),
     });
  
@@ -197,7 +197,7 @@ cartoDBBaseLayer = new ol.layer.Tile({
   map = new ol.Map({
     target: 'mymap',
     keyboardEventTarget: document,
-    layers:[osm, Humanitarian, cartoDBBaseLayer, Bing_aerial, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
+    layers:[osm, Humanitarian, cartoDBBaseLayer, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
     view: myview,
     controls:[
         new ol.control.Zoom(),
@@ -246,7 +246,6 @@ cartoDBBaseLayer = new ol.layer.Tile({
             },
             })}) 
             
-
       // Export Map //
 
       document.getElementById('export-png').addEventListener('click', function () {
