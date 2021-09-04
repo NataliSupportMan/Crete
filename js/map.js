@@ -32,7 +32,7 @@ function initMap() {
    // Points Style with images//
 
   const iconCitiesStyle = new ol.style.Icon({
-    src: '/images/cities.png',
+    src: './images/cities.png',
     size: [100, 100],
     offset: [0, 0],
     opacity: 0.9,
@@ -40,7 +40,7 @@ function initMap() {
   })
 
   const iconAmenitiesStyle = new ol.style.Icon({
-    src: '/images/amenities.png',
+    src: './images/amenities.png',
     size: [100, 100],
     offset: [0, 0],
     opacity: 1,
@@ -48,7 +48,7 @@ function initMap() {
   })
 
   const iconBathing_water_quality = new ol.style.Icon({
-    src: '/images/swim.png',
+    src: './images/swim.png',
     size: [100, 100],
     offset: [0, 0],
     opacity: 1,
@@ -56,7 +56,7 @@ function initMap() {
   })
 
   const iconAirports = new ol.style.Icon({
-    src: '/images/airports.png',
+    src: './images/airports.png',
     size: [100, 100],
     offset: [0, 0],
     opacity: 1,
@@ -146,15 +146,16 @@ function initMap() {
 
   // Open Street Map //
 
-  osm = new ol.layer.Tile({
+  const osm = new ol.layer.Tile({
        source: new ol.source.OSM(),
         title: 'Open Street Map',
-        type: 'base'
+        type: 'base',
+        visible: false
         });
 
    // Humanitarian Steet Map //
    
-   Humanitarian = new ol.layer.Tile({
+  const Humanitarian = new ol.layer.Tile({
      source: new ol.source.OSM({
       url: 'https://{a-c}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
      }),
@@ -164,7 +165,7 @@ function initMap() {
 
    // CartoDB Base Map //
 
-  cartoDBBaseLayer = new ol.layer.Tile({
+  const cartoDBBaseLayer = new ol.layer.Tile({
     source: new ol.source.XYZ({
     url: 'https://{1-4}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{scale}.png'
     }),
@@ -172,6 +173,28 @@ function initMap() {
     type: 'base',
     visible: true,
     });
+
+  // Base Vector Layers
+  // Vector Tile Layer OpenstreetMap 
+
+const openstreetMapVectorTile = new ol.layer.VectorTile({
+    source: new ol.source.VectorTile({
+    url: 'https://api.maptiler.com/tiles/v3-openmaptiles/{z}/{x}/{y}.pbf?key=ozW6yCA7cHviQQTy6XeF',
+    format: new ol.format.MVT(),
+    attributions: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+    }),
+    title: 'MapTiler',
+    type: 'base',
+    visible: false
+    });
+const openstreetMapVectorTileStyles = 'https://api.maptiler.com/maps/b635e6cc-0712-43be-8ba8-c32bb33a5d42/style.json?key=ozW6yCA7cHviQQTy6XeF'
+fetch(openstreetMapVectorTileStyles).then(function(response) {
+  console.log(response);
+  response.json().then(function(glStyle) {
+    console.log(glStyle);
+    olms.applyStyle(openstreetMapVectorTile, glStyle, 'e9378202-4ad8-4a06-943b-2b585267de3b');
+  });
+});
    
   // Bing Map Layer //
         
@@ -197,7 +220,7 @@ function initMap() {
   map = new ol.Map({
     target: 'mymap',
     keyboardEventTarget: document,
-    layers:[osm, Humanitarian, cartoDBBaseLayer, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
+    layers:[openstreetMapVectorTile, osm, Humanitarian, cartoDBBaseLayer, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
     view: myview,
     controls:[
         new ol.control.Zoom(),
@@ -236,7 +259,7 @@ function initMap() {
               }
             else if (feature.get('NAME_LATIN') !== undefined){
               overlayFeatureTitle.innerHTML = feature.get('NAME_LATIN');
-              }    
+              }      
             else {
               overlayFeatureTitle.innerHTML = feature.get('Name');
               }},
@@ -244,7 +267,7 @@ function initMap() {
             layerFilter: function(layerCanditate){
             return layerCanditate.get('title')  
             },
-            })}) 
+            })})         
             
       // Export Map //
 
