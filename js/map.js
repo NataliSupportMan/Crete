@@ -173,28 +173,6 @@ function initMap() {
     type: 'base',
     visible: true,
     });
-
-  // Base Vector Layers
-  // Vector Tile Layer OpenstreetMap 
-
-const openstreetMapVectorTile = new ol.layer.VectorTile({
-    source: new ol.source.VectorTile({
-    url: 'https://api.maptiler.com/tiles/v3-openmaptiles/{z}/{x}/{y}.pbf?key=ozW6yCA7cHviQQTy6XeF',
-    format: new ol.format.MVT(),
-    attributions: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-    }),
-    title: 'MapTiler',
-    type: 'base',
-    visible: false
-    });
-const openstreetMapVectorTileStyles = 'https://api.maptiler.com/maps/b635e6cc-0712-43be-8ba8-c32bb33a5d42/style.json?key=ozW6yCA7cHviQQTy6XeF'
-fetch(openstreetMapVectorTileStyles).then(function(response) {
-  console.log(response);
-  response.json().then(function(glStyle) {
-    console.log(glStyle);
-    olms.applyStyle(openstreetMapVectorTile, glStyle, 'e9378202-4ad8-4a06-943b-2b585267de3b');
-  });
-});
    
   // Bing Map Layer //
         
@@ -220,7 +198,7 @@ fetch(openstreetMapVectorTileStyles).then(function(response) {
   map = new ol.Map({
     target: 'mymap',
     keyboardEventTarget: document,
-    layers:[openstreetMapVectorTile, osm, Humanitarian, cartoDBBaseLayer, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
+    layers:[osm, Humanitarian, cartoDBBaseLayer, cities, airports, amenities, bathing_water_quality, rivers, boundaries],
     view: myview,
     controls:[
         new ol.control.Zoom(),
@@ -235,12 +213,12 @@ fetch(openstreetMapVectorTileStyles).then(function(response) {
 
       const overlayContainerElement = document.querySelector('.overlay-container');
       const overlayLayer = new ol.Overlay({
-      element: overlayContainerElement
+        element: overlayContainerElement
       })
       map.addOverlay(overlayLayer);
       const overlayFeatureTitle = document.getElementById('Points');
     
-      map.on ('click', function(e){
+      map.on ('pointermove', function(e){
         overlayLayer.setPosition(undefined);
           map.forEachFeatureAtPixel(e.pixel, function(feature, layer){
             let clickedCoordinate = e.coordinate;
@@ -259,13 +237,13 @@ fetch(openstreetMapVectorTileStyles).then(function(response) {
               }
             else if (feature.get('NAME_LATIN') !== undefined){
               overlayFeatureTitle.innerHTML = feature.get('NAME_LATIN');
-              }      
+              }
             else {
               overlayFeatureTitle.innerHTML = feature.get('Name');
               }},
               {
             layerFilter: function(layerCanditate){
-            return layerCanditate.get('title')  
+            return layerCanditate.get('title')
             },
             })})         
             
