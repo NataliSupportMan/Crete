@@ -189,7 +189,7 @@ function initMap() {
           
   myview = new ol.View({
     center: ol.proj.fromLonLat([25.144, 35.338], "EPSG:3857", "EPSG:2100",),
-    zoom: 6,
+    zoom: 7,
     projection: ('EPSG:2100', 'EPSG:3857'),
     });
  
@@ -218,7 +218,7 @@ function initMap() {
       map.addOverlay(overlayLayer);
       const overlayFeatureTitle = document.getElementById('Points');
     
-      map.on ('pointermove', function(e){
+      map.on ('click', function(e){
         overlayLayer.setPosition(undefined);
           map.forEachFeatureAtPixel(e.pixel, function(feature, layer){
             let clickedCoordinate = e.coordinate;
@@ -245,6 +245,9 @@ function initMap() {
             layerFilter: function(layerCanditate){
             return layerCanditate.get('title')
             },
-            })})         
-                 
+            })})  
+         
+    // Map interaction by default
+    const selectInteraction = new ol.interaction.Select();
+      map.addInteraction(selectInteraction);
 }
